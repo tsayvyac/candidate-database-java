@@ -1,14 +1,13 @@
 package com.tsayvyac.task.controller;
 
 import com.tsayvyac.task.dto.TechnologyRequest;
-import com.tsayvyac.task.model.Technology;
+import com.tsayvyac.task.dto.TechnologyResponse;
 import com.tsayvyac.task.service.TechnologyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -19,9 +18,9 @@ public class TechnologyController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<Technology> getAllTechnologies() {
+    public List<TechnologyResponse> getAllTechnologies() {
         // TODO: Implement getAllTechnologies
-        return Collections.emptyList();
+        return technologyService.getAllTechnologies();
     }
 
 //    TODO: How to get details? What is it supposed to look like?
@@ -35,6 +34,7 @@ public class TechnologyController {
     @ResponseStatus(HttpStatus.CREATED)
     public void addTechnology(@RequestBody TechnologyRequest technology) {
         // TODO: Implement addTechnology
+        technologyService.addTechnology(technology);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)

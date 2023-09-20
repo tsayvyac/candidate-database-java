@@ -1,9 +1,7 @@
 package com.tsayvyac.task.controller;
 
 import com.tsayvyac.task.dto.CandidateRequest;
-import com.tsayvyac.task.model.Candidate;
-import java.util.Collections;
-
+import com.tsayvyac.task.dto.CandidateResponse;
 import com.tsayvyac.task.service.CandidateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,9 +18,9 @@ public class CandidateController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<Candidate> getAllCandidates() {
+    public List<CandidateResponse> getAllCandidates() {
         // TODO: Implement getAllCandidates
-        return Collections.emptyList();
+        return candidateService.getAllCandidates();
     }
 
 //    TODO: How to get details? What is it supposed to look like?
@@ -36,6 +34,7 @@ public class CandidateController {
     @ResponseStatus(HttpStatus.CREATED)
     public void addCandidate(@RequestBody CandidateRequest candidate) {
         // TODO: Implement addCandidate
+        candidateService.addCandidate(candidate);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)

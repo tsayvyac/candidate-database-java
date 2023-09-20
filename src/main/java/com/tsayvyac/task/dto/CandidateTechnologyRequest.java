@@ -1,19 +1,16 @@
 package com.tsayvyac.task.dto;
 
-import com.tsayvyac.task.model.CandidateUseTechnology;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TechnologyResponse {
-    private Long id;
+public class CandidateTechnologyRequest {
     private String name;
-    private Set<CandidateUseTechnology> useTechnologies;
+    private Integer level;
+    private String note;
 }

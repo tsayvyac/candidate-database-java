@@ -8,8 +8,8 @@ import java.io.Serializable;
 
 @Embeddable
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class CandidateTechnologyKey implements Serializable {
 
     @Column(name = "technology_id")
