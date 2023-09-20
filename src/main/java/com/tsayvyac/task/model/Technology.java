@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,12 +23,7 @@ public class Technology {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "technology")
+    @OneToMany(mappedBy = "technology", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<CandidateUseTechnology> useTechnologies;
-
-    public void addToSet(CandidateUseTechnology cut) {
-        if (useTechnologies == null) useTechnologies = new HashSet<>();
-        useTechnologies.add(cut);
-    }
 }

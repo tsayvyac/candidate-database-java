@@ -1,4 +1,4 @@
-package com.tsayvyac.task.dto;
+package com.tsayvyac.task.dto.candidate;
 
 import com.tsayvyac.task.model.CandidateUseTechnology;
 import lombok.AllArgsConstructor;
@@ -12,8 +12,10 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TechnologyResponse {
+public class CandidateResponse {
     private Long id;
-    private String name;
+    private String firstName;
+    private String lastName;
+    private Integer age;
     private Set<CandidateUseTechnology> useTechnologies;
 }

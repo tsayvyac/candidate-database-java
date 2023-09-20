@@ -1,4 +1,4 @@
-package com.tsayvyac.task.dto;
+package com.tsayvyac.task.dto.technology;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CandidateTechnologyRequest {
+public class TechnologyRequest {
     private String name;
-    private Integer level;
-    private String note;
 }
