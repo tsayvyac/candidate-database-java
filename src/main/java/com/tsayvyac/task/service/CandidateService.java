@@ -1,9 +1,6 @@
 package com.tsayvyac.task.service;
 
-import com.tsayvyac.task.dto.candidate.CandidateDetailsResponse;
-import com.tsayvyac.task.dto.candidate.CandidateRequest;
-import com.tsayvyac.task.dto.candidate.CandidateResponse;
-import com.tsayvyac.task.dto.candidate.CandidateTechnologyRequest;
+import com.tsayvyac.task.dto.candidate.*;
 import com.tsayvyac.task.exception.AssociationNotFound;
 import com.tsayvyac.task.exception.CandidateNotFound;
 import com.tsayvyac.task.exception.LevelBoundsException;
@@ -21,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -67,10 +66,34 @@ public class CandidateService {
     }
 
     public CandidateDetailsResponse getCandidateDetails(Long id) {
-        return null;
+        return candidateRepository.findById(id)
+                .map(this::mapToDetailsResponse)
+                .orElseThrow(() -> new CandidateNotFound("Candidate with ID " + id + " not found!"));
     }
 
-    // TODO: Change the design of response candidates
+    private CandidateDetailsResponse mapToDetailsResponse(Candidate candidate) {
+        return CandidateDetailsResponse.builder()
+                .id(candidate.getId())
+                .firstName(candidate.getFirstName())
+                .lastName(candidate.getLastName())
+                .age(candidate.getAge())
+                .useTechnologies(mapToTechnologyListResponse(candidate.getUseTechnologies()))
+                .build();
+    }
+
+    private Set<TechnologyListResponse> mapToTechnologyListResponse(Set<CandidateUseTechnology> candidateUseTechnology) {
+        return candidateUseTechnology.stream().map(cut ->
+                technologyRepository.findById(cut.getTechnology().getId()).map(technology ->
+                        TechnologyListResponse.builder()
+                                .id(technology.getId())
+                                .name(technology.getName())
+                                .level(cut.getLevel())
+                                .note(cut.getNote())
+                                .build()
+                        ).orElseThrow(() -> new TechnologyNotFound("Technology with ID " + cut.getTechnology().getId() + " not found!"))
+        ).collect(Collectors.toSet());
+    }
+
     public List<CandidateResponse> getAllCandidates() {
         return candidateRepository.findAll()
                 .stream()
@@ -83,9 +106,19 @@ public class CandidateService {
                 .id(candidate.getId())
                 .firstName(candidate.getFirstName())
                 .lastName(candidate.getLastName())
-                .age(candidate.getAge())
-                .useTechnologies(candidate.getUseTechnologies())
+                .useTechnologies(mapToCandidateTechnologyLevel(candidate.getUseTechnologies()))
                 .build();
+    }
+
+    private Set<CandidateTechnologyLevel> mapToCandidateTechnologyLevel(Set<CandidateUseTechnology> candidateUseTechnology) {
+        return candidateUseTechnology.stream().map(cut ->
+            technologyRepository.findById(cut.getTechnology().getId()).map(technology ->
+                    CandidateTechnologyLevel.builder()
+                            .name(technology.getName())
+                            .level(cut.getLevel())
+                            .build()
+                    ).orElseThrow(() -> new TechnologyNotFound("Technology with ID " + cut.getTechnology().getId() + " not found!"))
+        ).collect(Collectors.toSet());
     }
 
     public void addCandidate(CandidateRequest candidateRequest) {
