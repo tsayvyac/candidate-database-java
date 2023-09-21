@@ -10,6 +10,7 @@ import com.tsayvyac.task.model.CandidateUseTechnology;
 import com.tsayvyac.task.model.Technology;
 import com.tsayvyac.task.repository.CandidateRepository;
 import com.tsayvyac.task.repository.TechnologyRepository;
+import com.tsayvyac.task.repository.pojo.TechnologyCount;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -94,5 +95,9 @@ public class TechnologyService {
 
         technologyRepository.save(technology);
         log.info("Technology {} is saved!", technology.getName());
+    }
+
+    public List<TechnologyCount> getCountOfUsingTechnology() {
+        return technologyRepository.getCountOfUsingTechnology();
     }
 }

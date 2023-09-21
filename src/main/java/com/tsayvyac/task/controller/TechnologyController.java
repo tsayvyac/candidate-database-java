@@ -3,6 +3,7 @@ package com.tsayvyac.task.controller;
 import com.tsayvyac.task.dto.technology.TechnologyDetailsResponse;
 import com.tsayvyac.task.dto.technology.TechnologyRequest;
 import com.tsayvyac.task.dto.technology.TechnologyResponse;
+import com.tsayvyac.task.repository.pojo.TechnologyCount;
 import com.tsayvyac.task.service.TechnologyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,12 @@ public class TechnologyController {
     @ResponseStatus(HttpStatus.OK)
     public TechnologyDetailsResponse getTechnologyDetailsById(@PathVariable Long id) {
         return technologyService.getTechnologyDetails(id);
+    }
+
+    @GetMapping(value = "/stats", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<TechnologyCount> getCountOfUsingTechnology() {
+        return technologyService.getCountOfUsingTechnology();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
