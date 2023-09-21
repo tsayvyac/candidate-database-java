@@ -47,7 +47,7 @@ public class TechnologyService {
         return TechnologyResponse.builder()
                 .id(technology.getId())
                 .name(technology.getName())
-                .usesThisTechnologies(technology.getUseTechnologies())
+                .usesThisTechnology(technology.getUseTechnologies())
                 .build();
     }
 

@@ -2,6 +2,7 @@ package com.tsayvyac.task.controller;
 
 import com.tsayvyac.task.dto.candidate.CandidateRequest;
 import com.tsayvyac.task.dto.candidate.CandidateResponse;
+import com.tsayvyac.task.dto.candidate.CandidateTechnologyRequest;
 import com.tsayvyac.task.service.CandidateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,12 @@ public class CandidateController {
     @ResponseStatus(HttpStatus.CREATED)
     public void addCandidate(@RequestBody CandidateRequest candidate) {
         candidateService.addCandidate(candidate);
+    }
+
+    @PutMapping(value = "/{id}/new", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public void addNewCandidateTechnology(@PathVariable Long id, @RequestBody List<CandidateTechnologyRequest> candidateTechnologyRequests) {
+        candidateService.addNewCandidateTechnology(id, candidateTechnologyRequests);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)

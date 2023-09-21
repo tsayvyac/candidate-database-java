@@ -15,5 +15,5 @@ import java.util.Set;
 public class TechnologyResponse {
     private Long id;
     private String name;
-    private Set<CandidateUseTechnology> usesThisTechnologies;
+    private Set<CandidateUseTechnology> usesThisTechnology;
 }

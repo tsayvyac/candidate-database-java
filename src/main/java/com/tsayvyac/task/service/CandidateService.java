@@ -3,10 +3,12 @@ package com.tsayvyac.task.service;
 import com.tsayvyac.task.dto.candidate.CandidateRequest;
 import com.tsayvyac.task.dto.candidate.CandidateResponse;
 import com.tsayvyac.task.dto.candidate.CandidateTechnologyRequest;
+import com.tsayvyac.task.exception.AssociationNotFound;
 import com.tsayvyac.task.exception.CandidateNotFound;
 import com.tsayvyac.task.exception.LevelBoundsException;
 import com.tsayvyac.task.exception.TechnologyNotFound;
 import com.tsayvyac.task.model.Candidate;
+import com.tsayvyac.task.model.CandidateTechnologyKey;
 import com.tsayvyac.task.model.CandidateUseTechnology;
 import com.tsayvyac.task.model.Technology;
 import com.tsayvyac.task.repository.CandidateRepository;
@@ -36,16 +38,30 @@ public class CandidateService {
     }
 
     public void updateCandidate(Long id, CandidateRequest candidateRequest) {
-        Optional<Candidate> candidateOpt = candidateRepository.findById(id);
-        if (candidateOpt.isPresent()) {
-            Candidate candidate = candidateOpt.get();
-            candidate.setFirstName(candidateRequest.getFirstName());
-            candidate.setLastName(candidateRequest.getLastName());
-            candidate.setAge(candidateRequest.getAge());
-            // TODO: Updating level and note??
-            candidateRepository.save(candidate);
-            log.info("Candidate with ID {} was saved!", candidate.getId());
-        } else throw new CandidateNotFound("Candidate with ID " + id + " not found!");
+        Candidate updatedCandidate = candidateRepository.findById(id)
+                .map(candidate -> {
+                    candidate.setFirstName(candidateRequest.getFirstName());
+                    candidate.setLastName(candidateRequest.getLastName());
+                    candidate.setAge(candidateRequest.getAge());
+
+                    // TODO: Create new class for similar methods. Refactor
+                    candidateRequest.getTechnologies().forEach(ctr -> {
+                        Long technologyId = technologyRepository.findByName(ctr.getName())
+                                .map(Technology::getId)
+                                .orElseThrow(() -> new TechnologyNotFound("Technology with name " + ctr.getName() + " not fount!"));
+                        CandidateUseTechnology cut = candidateUseTechnologyRepository.findById(new CandidateTechnologyKey(technologyId, id))
+                                .map(candidateUseTechnology -> {
+                                    candidateUseTechnology.setLevel(checkLevelBounds(ctr.getLevel()));
+                                    candidateUseTechnology.setNote(ctr.getNote());
+                                    return candidateUseTechnology;
+                                }).orElseThrow(() -> new AssociationNotFound("Relation between IDs " + id + " and " + technologyId + " not found!"));
+                        candidateUseTechnologyRepository.save(cut);
+                    });
+
+                    return candidate;
+                }).orElseThrow(() -> new CandidateNotFound("Candidate with ID " + id + " not found!"));
+        candidateRepository.save(updatedCandidate);
+        log.info("Candidate with ID {} was saved!", updatedCandidate.getId());
     }
 
     // TODO: Change the design of response candidates
@@ -66,7 +82,6 @@ public class CandidateService {
                 .build();
     }
 
-    // TODO: Ability to add new technologies for existing candidate ?
     public void addCandidate(CandidateRequest candidateRequest) {
         Candidate candidate = Candidate.builder()
                 .firstName(candidateRequest.getFirstName())
@@ -74,13 +89,21 @@ public class CandidateService {
                 .age(candidateRequest.getAge())
                 .build();
 
-        // TODO: Add candidate even technology does not exist (bug or feature)
         candidateRepository.save(candidate);
-        addToAssociate(candidate, candidateRequest.getTechnologies());
+        addToAssociativeTable(candidate, candidateRequest.getTechnologies());
         log.info("Candidate with ID {} was saved!", candidate.getId());
     }
 
-    private void addToAssociate(Candidate candidate, List<CandidateTechnologyRequest> candidateTechnologyRequests) {
+    public void addNewCandidateTechnology(Long id, List<CandidateTechnologyRequest> candidateTechnologyRequests) {
+        Candidate candidate = candidateRepository.findById(id)
+                .map(c -> {
+                    addToAssociativeTable(c, candidateTechnologyRequests);
+                    return c;
+                }).orElseThrow(() -> new CandidateNotFound("Candidate with ID " + id + " not found!"));
+        candidateRepository.save(candidate);
+    }
+
+    private void addToAssociativeTable(Candidate candidate, List<CandidateTechnologyRequest> candidateTechnologyRequests) {
         candidateTechnologyRequests.forEach(tech -> {
             Optional<Technology> technologyOpt = technologyRepository.findByName(tech.getName());
             if (technologyOpt.isPresent()) {
