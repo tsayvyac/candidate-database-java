@@ -1,5 +1,6 @@
 package com.tsayvyac.task.service;
 
+import com.tsayvyac.task.dto.candidate.CandidateDetailsResponse;
 import com.tsayvyac.task.dto.candidate.CandidateRequest;
 import com.tsayvyac.task.dto.candidate.CandidateResponse;
 import com.tsayvyac.task.dto.candidate.CandidateTechnologyRequest;
@@ -38,7 +39,8 @@ public class CandidateService {
     }
 
     public void updateCandidate(Long id, CandidateRequest candidateRequest) {
-        Candidate updatedCandidate = candidateRepository.findById(id)
+        candidateRepository.save(
+                candidateRepository.findById(id)
                 .map(candidate -> {
                     candidate.setFirstName(candidateRequest.getFirstName());
                     candidate.setLastName(candidateRequest.getLastName());
@@ -58,10 +60,14 @@ public class CandidateService {
                         candidateUseTechnologyRepository.save(cut);
                     });
 
+                    log.info("Candidate with ID {} was saved!", candidate.getId());
                     return candidate;
-                }).orElseThrow(() -> new CandidateNotFound("Candidate with ID " + id + " not found!"));
-        candidateRepository.save(updatedCandidate);
-        log.info("Candidate with ID {} was saved!", updatedCandidate.getId());
+                }).orElseThrow(() -> new CandidateNotFound("Candidate with ID " + id + " not found!"))
+        );
+    }
+
+    public CandidateDetailsResponse getCandidateDetails(Long id) {
+        return null;
     }
 
     // TODO: Change the design of response candidates
