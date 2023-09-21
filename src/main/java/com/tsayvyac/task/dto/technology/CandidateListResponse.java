@@ -9,7 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TechnologyResponse {
+public class CandidateListResponse {
     private Long id;
-    private String name;
+    private String firstName;
+    private String lastName;
+    private Integer level;
+    private String note;
 }

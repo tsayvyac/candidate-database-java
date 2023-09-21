@@ -11,9 +11,10 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CandidateResponse {
+public class CandidateDetailsResponse {
     private Long id;
     private String firstName;
     private String lastName;
-    private Set<CandidateTechnologyLevel> useTechnologies;
+    private Integer age;
+    private Set<TechnologyListResponse> useTechnologies;
 }

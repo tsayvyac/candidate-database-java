@@ -1,5 +1,6 @@
 package com.tsayvyac.task.controller;
 
+import com.tsayvyac.task.dto.candidate.CandidateDetailsResponse;
 import com.tsayvyac.task.dto.candidate.CandidateRequest;
 import com.tsayvyac.task.dto.candidate.CandidateResponse;
 import com.tsayvyac.task.dto.candidate.CandidateTechnologyRequest;
@@ -25,12 +26,11 @@ public class CandidateController {
         return candidateService.getAllCandidates();
     }
 
-//    TODO: How to get details? What is it supposed to look like?
-//    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(HttpStatus.OK)
-//    public Candidate getCandidateDetailsById(@PathVariable Long id) {
-//
-//    }
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public CandidateDetailsResponse getCandidateDetailsById(@PathVariable Long id) {
+        return candidateService.getCandidateDetails(id);
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)

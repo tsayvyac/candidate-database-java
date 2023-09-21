@@ -1,5 +1,6 @@
 package com.tsayvyac.task.controller;
 
+import com.tsayvyac.task.dto.technology.TechnologyDetailsResponse;
 import com.tsayvyac.task.dto.technology.TechnologyRequest;
 import com.tsayvyac.task.dto.technology.TechnologyResponse;
 import com.tsayvyac.task.service.TechnologyService;
@@ -22,12 +23,11 @@ public class TechnologyController {
         return technologyService.getAllTechnologies();
     }
 
-//    TODO: How to get details? What is it supposed to look like?
-//    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(HttpStatus.OK)
-//    public Technology getTechnologyDetailsById(@PathVariable Long id) {
-//
-//    }
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public TechnologyDetailsResponse getTechnologyDetailsById(@PathVariable Long id) {
+        return technologyService.getTechnologyDetails(id);
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
