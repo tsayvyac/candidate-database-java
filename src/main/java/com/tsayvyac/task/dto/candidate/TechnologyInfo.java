@@ -5,11 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents information about technology. Used with {@link CandidateResponse}.
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TechnologyListResponse {
+public class TechnologyInfo {
     private Long id;
     private String name;
     private Integer level;

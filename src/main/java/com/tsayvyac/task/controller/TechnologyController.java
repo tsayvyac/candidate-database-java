@@ -4,7 +4,7 @@ import com.tsayvyac.task.dto.technology.TechnologyDetailsResponse;
 import com.tsayvyac.task.dto.technology.TechnologyRequest;
 import com.tsayvyac.task.dto.technology.TechnologyResponse;
 import com.tsayvyac.task.repository.pojo.TechnologyCount;
-import com.tsayvyac.task.service.TechnologyService;
+import com.tsayvyac.task.service.ITechnologyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/api/tech")
 @RequiredArgsConstructor
 public class TechnologyController {
-    private final TechnologyService technologyService;
+    private final ITechnologyService technologyService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)

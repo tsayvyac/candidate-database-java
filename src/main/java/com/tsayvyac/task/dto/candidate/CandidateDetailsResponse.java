@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
+/**
+ * Represents a response object containing detailed information about a candidate.
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,5 +19,5 @@ public class CandidateDetailsResponse {
     private String firstName;
     private String lastName;
     private Integer age;
-    private Set<TechnologyListResponse> useTechnologies;
+    private Set<TechnologyInfo> useTechnologies;
 }

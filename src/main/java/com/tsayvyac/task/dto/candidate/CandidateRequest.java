@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-
+/**
+ * Represents a request object used for creating candidate information.
+ */
 @Data
 @Builder
 @NoArgsConstructor

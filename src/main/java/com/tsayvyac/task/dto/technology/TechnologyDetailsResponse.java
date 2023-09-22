@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
+/**
+ * Represents a response object containing detailed information about a technology.
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -14,5 +17,5 @@ import java.util.Set;
 public class TechnologyDetailsResponse {
     private Long id;
     private String name;
-    private Set<CandidateListResponse> usesThisTechnology;
+    private Set<CandidateInfo> usesThisTechnology;
 }

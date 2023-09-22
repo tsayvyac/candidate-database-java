@@ -5,11 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents information about candidate. Used with {@link TechnologyResponse}.
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CandidateListResponse {
+public class CandidateInfo {
     private Long id;
     private String firstName;
     private String lastName;
