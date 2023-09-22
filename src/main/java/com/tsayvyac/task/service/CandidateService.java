@@ -12,6 +12,7 @@ import com.tsayvyac.task.service.mapper.CandidateMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,14 +21,16 @@ import static com.tsayvyac.task.util.Constant.C_WITH_ID;
 import static com.tsayvyac.task.util.Constant.NOT_FOUND;
 
 @Service
+@Transactional
 @Slf4j
 @RequiredArgsConstructor
-public class CandidateService {
+class CandidateService implements ICandidateService {
     private final CandidateRepository candidateRepository;
     private final CandidateMapper candidateMapper;
     private final TechnologyService technologyService;
     private final CandidateUseTechnologyService cutService;
 
+    @Override
     public void deleteCandidate(Long id) {
         Optional<Candidate> candidateToDelete = candidateRepository.findById(id);
         if (candidateToDelete.isPresent()) {
@@ -36,6 +39,7 @@ public class CandidateService {
         }  else throw new CandidateNotFound(C_WITH_ID + id + NOT_FOUND);
     }
 
+    @Override
     public void updateCandidate(Long id, CandidateRequest candidateRequest) {
         candidateRepository.save(
                 candidateRepository.findById(id)
@@ -56,12 +60,14 @@ public class CandidateService {
         );
     }
 
+    @Override
     public CandidateDetailsResponse getCandidateDetails(Long id) {
         return candidateRepository.findById(id)
                 .map(candidateMapper::mapToDetailsResponse)
                 .orElseThrow(() -> new CandidateNotFound(C_WITH_ID + id + NOT_FOUND));
     }
 
+    @Override
     public List<CandidateResponse> getAllCandidates() {
         return candidateRepository.findAll()
                 .stream()
@@ -69,6 +75,7 @@ public class CandidateService {
                 .toList();
     }
 
+    @Override
     public void addCandidate(CandidateRequest candidateRequest) {
         Candidate candidate = Candidate.builder()
                 .firstName(candidateRequest.getFirstName())
@@ -81,6 +88,7 @@ public class CandidateService {
         log.info("{}{} was saved!", C_WITH_ID, candidate.getId());
     }
 
+    @Override
     public void addNewCandidateTechnology(Long id, List<CandidateTechnologyRequest> candidateTechnologyRequests) {
         Candidate candidate = candidateRepository.findById(id)
                 .map(c -> {

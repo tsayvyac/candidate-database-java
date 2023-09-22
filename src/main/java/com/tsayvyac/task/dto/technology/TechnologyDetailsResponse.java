@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
+/**
+ * Represents a response object containing detailed information about a technology.
+ */
 @Data
 @Builder
 @NoArgsConstructor

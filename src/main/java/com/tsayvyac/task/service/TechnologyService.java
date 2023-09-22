@@ -11,18 +11,22 @@ import com.tsayvyac.task.service.mapper.TechnologyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import static com.tsayvyac.task.util.Constant.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 @Slf4j
 @RequiredArgsConstructor
-public class TechnologyService {
+class TechnologyService implements ITechnologyService {
     private final TechnologyRepository technologyRepository;
     private final TechnologyMapper technologyMapper;
 
+    @Override
     public void deleteTechnology(Long id) {
         Optional<Technology> technologyToDelete = technologyRepository.findById(id);
         if (technologyToDelete.isPresent()) {
@@ -30,6 +34,7 @@ public class TechnologyService {
         } else throw new TechnologyNotFound(T_WITH_ID + id + NOT_FOUND);
     }
 
+    @Override
     public void updateTechnology(Long id, TechnologyRequest technologyRequest) {
         technologyRepository.save(technologyRepository.findById(id)
                 .map(technology -> {
@@ -41,12 +46,14 @@ public class TechnologyService {
         log.info("{}{} was saved!", T_WITH_NAME, technologyRequest.getName());
     }
 
+    @Override
     public TechnologyDetailsResponse getTechnologyDetails(Long id) {
         return technologyRepository.findById(id)
                 .map(technologyMapper::mapToDetailsResponse)
                 .orElseThrow(() -> new TechnologyNotFound(T_WITH_ID + id + NOT_FOUND));
     }
 
+    @Override
     public List<TechnologyResponse> getAllTechnologies() {
         return technologyRepository.findAll()
                 .stream()
@@ -54,6 +61,7 @@ public class TechnologyService {
                 .toList();
     }
 
+    @Override
     public void addTechnology(TechnologyRequest technologyRequest) {
         Technology technology = Technology.builder()
                 .name(technologyRequest.getName())
@@ -63,6 +71,7 @@ public class TechnologyService {
         log.info("{}{} is saved!", T_WITH_NAME, technology.getName());
     }
 
+    @Override
     public List<TechnologyCount> getCountOfUsingTechnology() {
         return technologyRepository.getCountOfUsingTechnology();
     }

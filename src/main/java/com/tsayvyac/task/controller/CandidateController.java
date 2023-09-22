@@ -4,7 +4,7 @@ import com.tsayvyac.task.dto.candidate.CandidateDetailsResponse;
 import com.tsayvyac.task.dto.candidate.CandidateRequest;
 import com.tsayvyac.task.dto.candidate.CandidateResponse;
 import com.tsayvyac.task.dto.candidate.CandidateTechnologyRequest;
-import com.tsayvyac.task.service.CandidateService;
+import com.tsayvyac.task.service.ICandidateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/api/candidate")
 @RequiredArgsConstructor
 public class CandidateController {
-    private final CandidateService candidateService;
+    private final ICandidateService candidateService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)

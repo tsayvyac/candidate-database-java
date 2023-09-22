@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
+/**
+ * Represents a response object used for retrieving candidate information.
+ */
 @Data
 @Builder
 @NoArgsConstructor

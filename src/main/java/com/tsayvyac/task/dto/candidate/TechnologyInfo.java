@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents information about technology. Used with {@link CandidateResponse}.
+ */
 @Data
 @Builder
 @NoArgsConstructor

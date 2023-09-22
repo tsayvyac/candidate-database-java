@@ -3,6 +3,11 @@
 ![ER diagram](/diagram/erd.png)\
 ER diagram
 
+- Optional object was used to avoid NullPointerException. 
+- I also actively used the Stream API to improve code readability and keep the code clean. 
+- An additional table with composite primary key was created to implement the many-to-many relationship. 
+- To define composite primary key in JPA I used @EmbeddedId and @Embeddable annotations.
+
 ## RestAPI Endpoints
 Candidate:
 - **/api/candidate** -- Add candidate, retrieve candidate data
@@ -39,6 +44,16 @@ Technology:
 {
     "name": "Typescript"
 }
+```
+/api/candidate/{id}/new
+```json
+[
+    {
+        "name": "Kotlin",
+        "level": 2,
+        "note": "Add new programming language"
+    }
+]
 ```
 ## Sample responses
 /api/candidate

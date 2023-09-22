@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a response object used for retrieving technology information.
+ */
 @Data
 @Builder
 @NoArgsConstructor
