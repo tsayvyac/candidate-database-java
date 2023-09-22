@@ -4,7 +4,7 @@ import com.tsayvyac.task.dto.candidate.CandidateDetailsResponse;
 import com.tsayvyac.task.dto.candidate.CandidateResponse;
 import com.tsayvyac.task.dto.candidate.CandidateTechnologyLevel;
 import com.tsayvyac.task.dto.candidate.TechnologyInfo;
-import com.tsayvyac.task.exception.TechnologyNotFound;
+import com.tsayvyac.task.exception.TechnologyException;
 import com.tsayvyac.task.model.Candidate;
 import com.tsayvyac.task.model.CandidateUseTechnology;
 import com.tsayvyac.task.repository.TechnologyRepository;
@@ -50,7 +50,7 @@ public class CandidateMapper {
                                 .build()
                         )
                         .orElseThrow(() ->
-                                new TechnologyNotFound(T_WITH_ID + cut.getTechnology().getId() + NOT_FOUND))
+                                new TechnologyException(T_WITH_ID + cut.getTechnology().getId() + NOT_FOUND))
                 )
                 .collect(Collectors.toSet());
     }
@@ -64,7 +64,7 @@ public class CandidateMapper {
                                 .build()
                         )
                         .orElseThrow(() ->
-                                new TechnologyNotFound(T_WITH_ID + cut.getTechnology().getId() + NOT_FOUND))
+                                new TechnologyException(T_WITH_ID + cut.getTechnology().getId() + NOT_FOUND))
                 )
                 .collect(Collectors.toSet());
     }

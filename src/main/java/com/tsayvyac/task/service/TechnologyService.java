@@ -3,7 +3,7 @@ package com.tsayvyac.task.service;
 import com.tsayvyac.task.dto.technology.TechnologyDetailsResponse;
 import com.tsayvyac.task.dto.technology.TechnologyRequest;
 import com.tsayvyac.task.dto.technology.TechnologyResponse;
-import com.tsayvyac.task.exception.TechnologyNotFound;
+import com.tsayvyac.task.exception.TechnologyException;
 import com.tsayvyac.task.model.Technology;
 import com.tsayvyac.task.repository.TechnologyRepository;
 import com.tsayvyac.task.repository.pojo.TechnologyCount;
@@ -31,7 +31,7 @@ class TechnologyService implements ITechnologyService {
         Optional<Technology> technologyToDelete = technologyRepository.findById(id);
         if (technologyToDelete.isPresent()) {
             technologyRepository.delete(technologyToDelete.get());
-        } else throw new TechnologyNotFound(T_WITH_ID + id + NOT_FOUND);
+        } else throw new TechnologyException(T_WITH_ID + id + NOT_FOUND);
     }
 
     @Override
@@ -41,7 +41,7 @@ class TechnologyService implements ITechnologyService {
                     technology.setName(technologyRequest.getName());
                     return technology;
                 })
-                .orElseThrow(() -> new TechnologyNotFound(T_WITH_ID + id + NOT_FOUND))
+                .orElseThrow(() -> new TechnologyException(T_WITH_ID + id + NOT_FOUND))
         );
         log.info("{}{} was saved!", T_WITH_NAME, technologyRequest.getName());
     }
@@ -50,7 +50,7 @@ class TechnologyService implements ITechnologyService {
     public TechnologyDetailsResponse getTechnologyDetails(Long id) {
         return technologyRepository.findById(id)
                 .map(technologyMapper::mapToDetailsResponse)
-                .orElseThrow(() -> new TechnologyNotFound(T_WITH_ID + id + NOT_FOUND));
+                .orElseThrow(() -> new TechnologyException(T_WITH_ID + id + NOT_FOUND));
     }
 
     @Override
@@ -63,10 +63,12 @@ class TechnologyService implements ITechnologyService {
 
     @Override
     public void addTechnology(TechnologyRequest technologyRequest) {
+        if (technologyRepository.findByName(technologyRequest.getName()).isPresent())
+            throw new TechnologyException(T_WITH_NAME + technologyRequest.getName() + " already exist in database");
+
         Technology technology = Technology.builder()
                 .name(technologyRequest.getName())
                 .build();
-
         technologyRepository.save(technology);
         log.info("{}{} is saved!", T_WITH_NAME, technology.getName());
     }
@@ -79,6 +81,6 @@ class TechnologyService implements ITechnologyService {
     Long getTechnologyId(String name) {
         return technologyRepository.findByName(name)
                 .map(Technology::getId)
-                .orElseThrow(() -> new TechnologyNotFound(T_WITH_NAME + name + NOT_FOUND));
+                .orElseThrow(() -> new TechnologyException(T_WITH_NAME + name + NOT_FOUND));
     }
 }

@@ -2,7 +2,7 @@ package com.tsayvyac.task.service;
 
 import com.tsayvyac.task.dto.candidate.CandidateTechnologyRequest;
 import com.tsayvyac.task.exception.AssociationNotFound;
-import com.tsayvyac.task.exception.TechnologyNotFound;
+import com.tsayvyac.task.exception.TechnologyException;
 import com.tsayvyac.task.model.Candidate;
 import com.tsayvyac.task.model.CandidateTechnologyKey;
 import com.tsayvyac.task.model.CandidateUseTechnology;
@@ -45,7 +45,7 @@ class CandidateUseTechnologyService {
                                     .build()
                     )
                     .orElseThrow(() ->
-                            new TechnologyNotFound(T_WITH_NAME + ctr.getName() + NOT_FOUND));
+                            new TechnologyException(T_WITH_NAME + ctr.getName() + NOT_FOUND));
             cutRepository.save(cut);
         });
     }
