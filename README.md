@@ -8,6 +8,9 @@ ER diagram
 - An additional table with composite primary key was created to implement the many-to-many relationship. 
 - To define composite primary key in JPA I used @EmbeddedId and @Embeddable annotations.
 
+### Bonus
+I created [endpoint](#bonus-sample) to find out how many candidates are using this technology.
+
 ## RestAPI Endpoints
 Candidate:
 - **/api/candidate** -- Add candidate, retrieve candidate data
@@ -99,6 +102,7 @@ Technology:
   ]
 }
 ```
+## Bonus sample
 /api/tech/stats
 ```json
 [
