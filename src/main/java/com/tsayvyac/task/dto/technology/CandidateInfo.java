@@ -1,4 +1,4 @@
-package com.tsayvyac.task.dto.candidate;
+package com.tsayvyac.task.dto.technology;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TechnologyListResponse {
+public class CandidateInfo {
     private Long id;
-    private String name;
+    private String firstName;
+    private String lastName;
     private Integer level;
     private String note;
 }

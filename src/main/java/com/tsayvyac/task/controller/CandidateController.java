@@ -6,7 +6,6 @@ import com.tsayvyac.task.dto.candidate.CandidateResponse;
 import com.tsayvyac.task.dto.candidate.CandidateTechnologyRequest;
 import com.tsayvyac.task.service.CandidateService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/candidate")
-@Slf4j
 @RequiredArgsConstructor
 public class CandidateController {
     private final CandidateService candidateService;

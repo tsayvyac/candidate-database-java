@@ -16,5 +16,5 @@ public class CandidateDetailsResponse {
     private String firstName;
     private String lastName;
     private Integer age;
-    private Set<TechnologyListResponse> useTechnologies;
+    private Set<TechnologyInfo> useTechnologies;
 }
