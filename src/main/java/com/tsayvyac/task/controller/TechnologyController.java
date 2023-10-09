@@ -18,13 +18,13 @@ import java.util.List;
 public class TechnologyController {
     private final ITechnologyService technologyService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/fetchAll", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<TechnologyResponse> getAllTechnologies() {
         return technologyService.getAllTechnologies();
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/fetchDetails/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public TechnologyDetailsResponse getTechnologyDetailsById(@PathVariable Long id) {
         return technologyService.getTechnologyDetails(id);
@@ -36,19 +36,19 @@ public class TechnologyController {
         return technologyService.getCountOfUsingTechnology();
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void addTechnology(@RequestBody TechnologyRequest technology) {
         technologyService.addTechnology(technology);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void updateTechnology(@PathVariable Long id, @RequestBody TechnologyRequest technologyRequest) {
         technologyService.updateTechnology(id, technologyRequest);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteTechnology(@PathVariable Long id) {
         technologyService.deleteTechnology(id);

@@ -13,16 +13,23 @@ I created [endpoint](#bonus-sample) to find out how many candidates are using th
 
 ## RestAPI Endpoints
 Candidate:
-- **/api/candidate** -- Add candidate, retrieve candidate data
-- **/api/candidate/{id}** -- Delete/update candidate data, retrieve candidate details
+- **/api/candidate/fetchAll** -- fetch all candidates.
+- **/api/candidate/add** -- add new candidate.
+- **/api/candidate/delete/{id}** -- delete candidate with id: {id}.
+- **/api/candidate/update/{id}** -- update candidate with id: {id}.
+- **/api/candidate/addTech/{id}** -- add technology to candidate with id: {id}.
+- **/api/candidate/fetchDetails/{id}** -- fetch candidate details with id: {id}.
 
 Technology:
-- **/api/tech** -- Add technology, retrieve technology
-- **/api/tech/{id}** -- Delete/update technology, retrieve technology details
-- **/api/tech/stats** -- Retrieve a list with the name of technology and the count of candidates using it
+- **/api/tech/fetchAll** -- fetch all technologies.
+- **/api/tech/add** -- add new technology.
+- **/api/tech/delete/{id}** -- delete technology with id: {id}.
+- **/api/tech/update/{id}** -- update technology with id: {id}.
+- **/api/tech/fetchDetails** -- fetch technology details with id: {id}.
+- **/stats** -- fetch a list with the name of technology and the count of candidates using it.
 
 ## Sample requests
-/api/candidate:
+/api/candidate/add:
 ```json
 {
     "firstName": "Adam",
@@ -42,13 +49,13 @@ Technology:
     ]
 }
 ```
-/api/tech:
+/api/tech/add:
 ```json
 {
     "name": "Typescript"
 }
 ```
-/api/candidate/{id}/new
+/api/candidate/addTech/{id}
 ```json
 [
     {
@@ -59,7 +66,7 @@ Technology:
 ]
 ```
 ## Sample responses
-/api/candidate
+/api/candidate/fetchAll
 ```json
 [
     {
@@ -79,7 +86,7 @@ Technology:
     }
 ]
 ```
-/api/candidate/{id}
+/api/candidate/fetchDetails/{id}
 ```json
 {
   "id": 1,

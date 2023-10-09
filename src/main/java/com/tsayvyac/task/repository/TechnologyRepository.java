@@ -14,6 +14,6 @@ public interface TechnologyRepository extends JpaRepository<Technology, Long> {
     Optional<Technology> findByName(String name);
 
     @Query("SELECT new com.tsayvyac.task.repository.pojo.TechnologyCount(t.name, count(cut.technology.id)) FROM Technology AS t " +
-            "INNER JOIN CandidateUseTechnology AS cut ON t.id = cut.technology.id GROUP BY t.name")
+            "LEFT JOIN CandidateUseTechnology AS cut ON t.id = cut.technology.id GROUP BY t.name")
     List<TechnologyCount> getCountOfUsingTechnology();
 }
