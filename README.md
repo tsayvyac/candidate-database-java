@@ -1,4 +1,11 @@
-# Task
+# Candidate Database
+## Assignment
+Create a SpringBoot application using Java on the topic of a simple candidate database. 
+The application must include an API and a database to store the candidate data. 
+The database will also store technologies that are related to the candidate. 
+Each link between a candidate and a technology will be contained a level (1-10) and a note.
+
+## Solution
 
 ![ER diagram](/diagram/erd.png)\
 ER diagram
