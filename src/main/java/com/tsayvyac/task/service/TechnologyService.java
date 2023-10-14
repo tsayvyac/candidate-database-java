@@ -3,84 +3,54 @@ package com.tsayvyac.task.service;
 import com.tsayvyac.task.dto.technology.TechnologyDetailsResponse;
 import com.tsayvyac.task.dto.technology.TechnologyRequest;
 import com.tsayvyac.task.dto.technology.TechnologyResponse;
-import com.tsayvyac.task.exception.TechnologyException;
 import com.tsayvyac.task.model.Technology;
-import com.tsayvyac.task.repository.TechnologyRepository;
 import com.tsayvyac.task.repository.pojo.TechnologyCount;
-import com.tsayvyac.task.service.mapper.TechnologyMapper;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import static com.tsayvyac.task.util.Constant.*;
 
 import java.util.List;
-import java.util.Optional;
 
-@Service
-@Transactional
-@Slf4j
-@RequiredArgsConstructor
-class TechnologyService implements ITechnologyService {
-    private final TechnologyRepository technologyRepository;
-    private final TechnologyMapper technologyMapper;
+public interface TechnologyService {
 
-    @Override
-    public void deleteTechnology(Long id) {
-        Optional<Technology> technologyToDelete = technologyRepository.findById(id);
-        if (technologyToDelete.isPresent()) {
-            technologyRepository.delete(technologyToDelete.get());
-        } else throw new TechnologyException(T_WITH_ID + id + NOT_FOUND);
-    }
+    /**
+     * Deletes the technology with ID from the database.
+     * @param id ID of the technology to be deleted.
+     */
+    void deleteTechnology(Long id);
 
-    @Override
-    public void updateTechnology(Long id, TechnologyRequest technologyRequest) {
-        technologyRepository.save(technologyRepository.findById(id)
-                .map(technology -> {
-                    technology.setName(technologyRequest.getName());
-                    return technology;
-                })
-                .orElseThrow(() -> new TechnologyException(T_WITH_ID + id + NOT_FOUND))
-        );
-        log.info("{}{} was saved!", T_WITH_NAME, technologyRequest.getName());
-    }
+    /**
+     * Updates the information of the technology with ID using the provided technology request data.
+     *
+     * @param id              ID of the technology to be updated.
+     * @param technologyRequest The technology request object containing the updated information.
+     */
+    Technology updateTechnology(Long id, TechnologyRequest technologyRequest);
 
-    @Override
-    public TechnologyDetailsResponse getTechnologyDetails(Long id) {
-        return technologyRepository.findById(id)
-                .map(technologyMapper::mapToDetailsResponse)
-                .orElseThrow(() -> new TechnologyException(T_WITH_ID + id + NOT_FOUND));
-    }
+    /**
+     * Retrieves detailed information about the technology with ID.
+     *
+     * @param id ID of the technology for which details are to be retrieved.
+     * @return An object {@link TechnologyDetailsResponse} representing response that contains the detailed information about the technology.
+     */
+    TechnologyDetailsResponse getTechnologyDetails(Long id);
 
-    @Override
-    public List<TechnologyResponse> getAllTechnologies() {
-        return technologyRepository.findAll()
-                .stream()
-                .map(technologyMapper::mapToResponse)
-                .toList();
-    }
+    /**
+     * Retrieves all technologies stores in the database.
+     *
+     * @return A list of {@link TechnologyResponse} objects representing the technologies.
+     */
+    List<TechnologyResponse> getAllTechnologies();
 
-    @Override
-    public void addTechnology(TechnologyRequest technologyRequest) {
-        if (technologyRepository.findByName(technologyRequest.getName()).isPresent())
-            throw new TechnologyException(T_WITH_NAME + technologyRequest.getName() + " already exist in database");
+    /**
+     * Adds a new technology to the database using the provided technology request data.
+     *
+     * @param technologyRequest The technology request object containing the technology's information.
+     */
+    Technology addTechnology(TechnologyRequest technologyRequest);
 
-        Technology technology = Technology.builder()
-                .name(technologyRequest.getName())
-                .build();
-        technologyRepository.save(technology);
-        log.info("{}{} is saved!", T_WITH_NAME, technology.getName());
-    }
-
-    @Override
-    public List<TechnologyCount> getCountOfUsingTechnology() {
-        return technologyRepository.getCountOfUsingTechnology();
-    }
-
-    Long getTechnologyId(String name) {
-        return technologyRepository.findByName(name)
-                .map(Technology::getId)
-                .orElseThrow(() -> new TechnologyException(T_WITH_NAME + name + NOT_FOUND));
-    }
+    /**
+     * Retrieves a list of {@link TechnologyCount} objects representing the count of candidates
+     * using each technology in the database.
+     *
+     * @return A list of technology count information.
+     */
+    List<TechnologyCount> getCountOfUsingTechnology();
 }

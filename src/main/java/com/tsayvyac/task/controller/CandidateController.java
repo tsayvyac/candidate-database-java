@@ -4,7 +4,8 @@ import com.tsayvyac.task.dto.candidate.CandidateDetailsResponse;
 import com.tsayvyac.task.dto.candidate.CandidateRequest;
 import com.tsayvyac.task.dto.candidate.CandidateResponse;
 import com.tsayvyac.task.dto.candidate.CandidateTechnologyRequest;
-import com.tsayvyac.task.service.ICandidateService;
+import com.tsayvyac.task.model.Candidate;
+import com.tsayvyac.task.service.CandidateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/candidate")
 @RequiredArgsConstructor
 public class CandidateController {
-    private final ICandidateService candidateService;
+    private final CandidateService candidateService;
 
     @GetMapping(value = "/fetchAll", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -32,20 +33,20 @@ public class CandidateController {
 
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCandidate(@RequestBody CandidateRequest candidate) {
-        candidateService.addCandidate(candidate);
+    public Candidate addCandidate(@RequestBody CandidateRequest candidate) {
+        return candidateService.addCandidate(candidate);
     }
 
     @PutMapping(value = "/addTech/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public void addNewCandidateTechnology(@PathVariable Long id, @RequestBody List<CandidateTechnologyRequest> candidateTechnologyRequests) {
-        candidateService.addNewCandidateTechnology(id, candidateTechnologyRequests);
+    public Candidate addNewCandidateTechnology(@PathVariable Long id, @RequestBody List<CandidateTechnologyRequest> candidateTechnologyRequests) {
+        return candidateService.addNewCandidateTechnology(id, candidateTechnologyRequests);
     }
 
     @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public void updateCandidate(@PathVariable Long id, @RequestBody CandidateRequest candidateRequest) {
-        candidateService.updateCandidate(id, candidateRequest);
+    public Candidate updateCandidate(@PathVariable Long id, @RequestBody CandidateRequest candidateRequest) {
+        return candidateService.updateCandidate(id, candidateRequest);
     }
 
     @DeleteMapping(value = "/delete/{id}")

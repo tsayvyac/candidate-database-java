@@ -3,8 +3,9 @@ package com.tsayvyac.task.controller;
 import com.tsayvyac.task.dto.technology.TechnologyDetailsResponse;
 import com.tsayvyac.task.dto.technology.TechnologyRequest;
 import com.tsayvyac.task.dto.technology.TechnologyResponse;
+import com.tsayvyac.task.model.Technology;
 import com.tsayvyac.task.repository.pojo.TechnologyCount;
-import com.tsayvyac.task.service.ITechnologyService;
+import com.tsayvyac.task.service.TechnologyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/tech")
 @RequiredArgsConstructor
 public class TechnologyController {
-    private final ITechnologyService technologyService;
+    private final TechnologyService technologyService;
 
     @GetMapping(value = "/fetchAll", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -38,14 +39,14 @@ public class TechnologyController {
 
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void addTechnology(@RequestBody TechnologyRequest technology) {
-        technologyService.addTechnology(technology);
+    public Technology addTechnology(@RequestBody TechnologyRequest technology) {
+        return technologyService.addTechnology(technology);
     }
 
     @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public void updateTechnology(@PathVariable Long id, @RequestBody TechnologyRequest technologyRequest) {
-        technologyService.updateTechnology(id, technologyRequest);
+    public Technology updateTechnology(@PathVariable Long id, @RequestBody TechnologyRequest technologyRequest) {
+        return technologyService.updateTechnology(id, technologyRequest);
     }
 
     @DeleteMapping(value = "/delete/{id}")

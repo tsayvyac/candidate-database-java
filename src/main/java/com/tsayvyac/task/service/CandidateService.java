@@ -4,97 +4,53 @@ import com.tsayvyac.task.dto.candidate.CandidateDetailsResponse;
 import com.tsayvyac.task.dto.candidate.CandidateRequest;
 import com.tsayvyac.task.dto.candidate.CandidateResponse;
 import com.tsayvyac.task.dto.candidate.CandidateTechnologyRequest;
-import com.tsayvyac.task.exception.CandidateNotFound;
 import com.tsayvyac.task.model.Candidate;
-import com.tsayvyac.task.model.CandidateTechnologyKey;
-import com.tsayvyac.task.repository.CandidateRepository;
-import com.tsayvyac.task.service.mapper.CandidateMapper;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
-import static com.tsayvyac.task.util.Constant.C_WITH_ID;
-import static com.tsayvyac.task.util.Constant.NOT_FOUND;
+public interface CandidateService {
 
-@Service
-@Transactional
-@Slf4j
-@RequiredArgsConstructor
-class CandidateService implements ICandidateService {
-    private final CandidateRepository candidateRepository;
-    private final CandidateMapper candidateMapper;
-    private final TechnologyService technologyService;
-    private final CandidateUseTechnologyService cutService;
+    /**
+     * Deletes the candidate with ID from the database.
+     * @param id ID of the candidate to be deleted.
+     */
+    void deleteCandidate(Long id);
 
-    @Override
-    public void deleteCandidate(Long id) {
-        Optional<Candidate> candidateToDelete = candidateRepository.findById(id);
-        if (candidateToDelete.isPresent()) {
-            candidateRepository.delete(candidateToDelete.get());
-            log.info("{}{} was deleted!", C_WITH_ID, id);
-        }  else throw new CandidateNotFound(C_WITH_ID + id + NOT_FOUND);
-    }
+    /**
+     * Updates the information of the candidate with ID using the provided candidate request data.
+     *
+     * @param id              ID of the candidate to be updated.
+     * @param candidateRequest The candidate request object containing the updated information.
+     */
+    Candidate updateCandidate(Long id, CandidateRequest candidateRequest);
 
-    @Override
-    public void updateCandidate(Long id, CandidateRequest candidateRequest) {
-        candidateRepository.save(
-                candidateRepository.findById(id)
-                        .map(candidate -> {
-                            candidate.setFirstName(candidateRequest.getFirstName());
-                            candidate.setLastName(candidateRequest.getLastName());
-                            candidate.setAge(candidateRequest.getAge());
+    /**
+     * Retrieves detailed information about the candidate with ID.
+     *
+     * @param id ID of the candidate for which details are to be retrieved.
+     * @return An object {@link CandidateDetailsResponse} representing response that contains the detailed information about the candidate.
+     */
+    CandidateDetailsResponse getCandidateDetails(Long id);
 
-                            candidateRequest.getTechnologies().forEach(ctr -> {
-                                Long technologyId = technologyService.getTechnologyId(ctr.getName());
-                                cutService.updateCUT(new CandidateTechnologyKey(technologyId, id), ctr);
-                            });
+    /**
+     * Retrieves all candidates stores in the database.
+     *
+     * @return A list of {@link CandidateResponse} objects representing the candidates.
+     */
+    List<CandidateResponse> getAllCandidates();
 
-                            log.info("{}{} was saved!", C_WITH_ID, candidate.getId());
-                            return candidate;
-                        })
-                        .orElseThrow(() -> new CandidateNotFound(C_WITH_ID + id + NOT_FOUND))
-        );
-    }
+    /**
+     * Adds a new candidate to the database using the provided candidate request data.
+     *
+     * @param candidateRequest The candidate request object containing the candidate's information.
+     */
+    Candidate addCandidate(CandidateRequest candidateRequest);
 
-    @Override
-    public CandidateDetailsResponse getCandidateDetails(Long id) {
-        return candidateRepository.findById(id)
-                .map(candidateMapper::mapToDetailsResponse)
-                .orElseThrow(() -> new CandidateNotFound(C_WITH_ID + id + NOT_FOUND));
-    }
-
-    @Override
-    public List<CandidateResponse> getAllCandidates() {
-        return candidateRepository.findAll()
-                .stream()
-                .map(candidateMapper::mapToCandidateResponse)
-                .toList();
-    }
-
-    @Override
-    public void addCandidate(CandidateRequest candidateRequest) {
-        Candidate candidate = Candidate.builder()
-                .firstName(candidateRequest.getFirstName())
-                .lastName(candidateRequest.getLastName())
-                .age(candidateRequest.getAge())
-                .build();
-
-        candidateRepository.save(candidate);
-        cutService.addToAssociativeTable(candidate, candidateRequest.getTechnologies());
-        log.info("{}{} was saved!", C_WITH_ID, candidate.getId());
-    }
-
-    @Override
-    public void addNewCandidateTechnology(Long id, List<CandidateTechnologyRequest> candidateTechnologyRequests) {
-        Candidate candidate = candidateRepository.findById(id)
-                .map(c -> {
-                    cutService.addToAssociativeTable(c, candidateTechnologyRequests);
-                    return c;
-                }).orElseThrow(() -> new CandidateNotFound(C_WITH_ID + id + NOT_FOUND));
-        candidateRepository.save(candidate);
-    }
+    /**
+     * Adds new technologies to an existing candidate using the provided candidate ID and technology requests.
+     *
+     * @param id                       ID of the candidate to whom technologies will be added.
+     * @param candidateTechnologyRequests A list of {@link CandidateTechnologyRequest} objects representing the new technologies.
+     */
+    Candidate addNewCandidateTechnology(Long id, List<CandidateTechnologyRequest> candidateTechnologyRequests);
 }
