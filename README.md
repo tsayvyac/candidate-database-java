@@ -18,6 +18,9 @@ ER diagram
 ### Bonus
 I created [endpoint](#bonus-sample) to find out how many candidates are using this technology.
 
+## Swagger
+http://localhost:8080/swagger-ui/index.html#/
+
 ## RestAPI Endpoints
 Candidate:
 - **/api/candidate/fetchAll** -- fetch all candidates.
