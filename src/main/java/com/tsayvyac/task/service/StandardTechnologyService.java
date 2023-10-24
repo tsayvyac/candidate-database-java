@@ -38,8 +38,8 @@ class StandardTechnologyService implements TechnologyService {
     public Technology updateTechnology(Long id, TechnologyRequest technologyRequest) {
         return technologyRepository.save(technologyRepository.findById(id)
                 .map(technology -> {
-                    technology.setName(technologyRequest.getName());
-                    log.info("{}{} was saved!", T_WITH_NAME, technologyRequest.getName());
+                    technology.setName(technologyRequest.name());
+                    log.info("{}{} was saved!", T_WITH_NAME, technologyRequest.name());
                     return technology;
                 })
                 .orElseThrow(() -> new TechnologyException(T_WITH_ID + id + NOT_FOUND))
@@ -63,11 +63,11 @@ class StandardTechnologyService implements TechnologyService {
 
     @Override
     public Technology addTechnology(TechnologyRequest technologyRequest) {
-        if (technologyRepository.findByName(technologyRequest.getName()).isPresent())
-            throw new TechnologyException(T_WITH_NAME + technologyRequest.getName() + " already exist in database");
+        if (technologyRepository.findByName(technologyRequest.name()).isPresent())
+            throw new TechnologyException(T_WITH_NAME + technologyRequest.name() + " already exist in database");
 
         Technology technology = Technology.builder()
-                .name(technologyRequest.getName())
+                .name(technologyRequest.name())
                 .build();
         log.info("{}{} is saved!", T_WITH_NAME, technology.getName());
         return technologyRepository.save(technology);

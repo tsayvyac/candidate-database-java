@@ -21,33 +21,33 @@ public class CandidateMapper {
     private final TechnologyRepository technologyRepository;
 
     public CandidateResponse mapToCandidateResponse(Candidate candidate) {
-        return CandidateResponse.builder()
-                .id(candidate.getId())
-                .firstName(candidate.getFirstName())
-                .lastName(candidate.getLastName())
-                .useTechnologies(mapToCandidateTechnologyLevel(candidate.getUseTechnologies()))
-                .build();
+        return new CandidateResponse(
+                candidate.getId(),
+                candidate.getFirstName(),
+                candidate.getLastName(),
+                mapToCandidateTechnologyLevel(candidate.getUseTechnologies())
+        );
     }
 
     public CandidateDetailsResponse mapToDetailsResponse(Candidate candidate) {
-        return CandidateDetailsResponse.builder()
-                .id(candidate.getId())
-                .firstName(candidate.getFirstName())
-                .lastName(candidate.getLastName())
-                .age(candidate.getAge())
-                .useTechnologies(mapToTechnologyInfo(candidate.getUseTechnologies()))
-                .build();
+        return new CandidateDetailsResponse(
+                candidate.getId(),
+                candidate.getFirstName(),
+                candidate.getLastName(),
+                candidate.getAge(),
+                mapToTechnologyInfo(candidate.getUseTechnologies())
+        );
     }
 
     private Set<TechnologyInfo> mapToTechnologyInfo(Set<CandidateUseTechnology> candidateUseTechnology) {
         return candidateUseTechnology.stream()
                 .map(cut -> technologyRepository.findById(cut.getTechnology().getId())
-                        .map(technology -> TechnologyInfo.builder()
-                                .id(technology.getId())
-                                .name(technology.getName())
-                                .level(cut.getLevel())
-                                .note(cut.getNote())
-                                .build()
+                        .map(technology -> new TechnologyInfo(
+                                        technology.getId(),
+                                        technology.getName(),
+                                        cut.getLevel(),
+                                        cut.getNote()
+                                )
                         )
                         .orElseThrow(() ->
                                 new TechnologyException(T_WITH_ID + cut.getTechnology().getId() + NOT_FOUND))
@@ -58,10 +58,10 @@ public class CandidateMapper {
     private Set<CandidateTechnologyLevel> mapToCandidateTechnologyLevel(Set<CandidateUseTechnology> candidateUseTechnology) {
         return candidateUseTechnology.stream()
                 .map(cut -> technologyRepository.findById(cut.getTechnology().getId())
-                        .map(technology -> CandidateTechnologyLevel.builder()
-                                .name(technology.getName())
-                                .level(cut.getLevel())
-                                .build()
+                        .map(technology -> new CandidateTechnologyLevel(
+                                        technology.getName(),
+                                        cut.getLevel()
+                                )
                         )
                         .orElseThrow(() ->
                                 new TechnologyException(T_WITH_ID + cut.getTechnology().getId() + NOT_FOUND))

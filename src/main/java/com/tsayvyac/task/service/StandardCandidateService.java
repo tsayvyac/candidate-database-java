@@ -44,12 +44,12 @@ class StandardCandidateService implements CandidateService {
         return candidateRepository.save(
                 candidateRepository.findById(id)
                         .map(candidate -> {
-                            candidate.setFirstName(candidateRequest.getFirstName());
-                            candidate.setLastName(candidateRequest.getLastName());
-                            candidate.setAge(candidateRequest.getAge());
+                            candidate.setFirstName(candidateRequest.firstName());
+                            candidate.setLastName(candidateRequest.lastName());
+                            candidate.setAge(candidateRequest.age());
 
-                            candidateRequest.getTechnologies().forEach(ctr -> {
-                                Long technologyId = technologyService.getTechnologyId(ctr.getName());
+                            candidateRequest.technologies().forEach(ctr -> {
+                                Long technologyId = technologyService.getTechnologyId(ctr.name());
                                 cutService.updateCUT(new CandidateTechnologyKey(technologyId, id), ctr);
                             });
 
@@ -78,13 +78,13 @@ class StandardCandidateService implements CandidateService {
     @Override
     public Candidate addCandidate(CandidateRequest candidateRequest) {
         Candidate candidate = Candidate.builder()
-                .firstName(candidateRequest.getFirstName())
-                .lastName(candidateRequest.getLastName())
-                .age(candidateRequest.getAge())
+                .firstName(candidateRequest.firstName())
+                .lastName(candidateRequest.lastName())
+                .age(candidateRequest.age())
                 .build();
 
         candidateRepository.save(candidate);
-        cutService.addToAssociativeTable(candidate, candidateRequest.getTechnologies());
+        cutService.addToAssociativeTable(candidate, candidateRequest.technologies());
         log.info("{}{} was saved!", C_WITH_ID, candidate.getId());
         return candidate;
     }
