@@ -25,8 +25,8 @@ class CandidateUseTechnologyService {
         cutRepository.save(
                 cutRepository.findById(key)
                         .map(candidateUseTechnology -> {
-                            candidateUseTechnology.setLevel(Helper.checkLevelBounds(ctr.getLevel()));
-                            candidateUseTechnology.setNote(ctr.getNote());
+                            candidateUseTechnology.setLevel(Helper.checkLevelBounds(ctr.level()));
+                            candidateUseTechnology.setNote(ctr.note());
                             return candidateUseTechnology;
                         })
                         .orElseThrow(() ->
@@ -36,16 +36,16 @@ class CandidateUseTechnologyService {
 
     void addToAssociativeTable(Candidate candidate, List<CandidateTechnologyRequest> candidateTechnologyRequests) {
         candidateTechnologyRequests.forEach(ctr -> {
-            CandidateUseTechnology cut = technologyRepository.findByName(ctr.getName()).map(technology ->
+            CandidateUseTechnology cut = technologyRepository.findByName(ctr.name()).map(technology ->
                             CandidateUseTechnology.builder()
                                     .candidate(candidate)
                                     .technology(technology)
-                                    .level(Helper.checkLevelBounds(ctr.getLevel()))
-                                    .note(ctr.getNote())
+                                    .level(Helper.checkLevelBounds(ctr.level()))
+                                    .note(ctr.note())
                                     .build()
                     )
                     .orElseThrow(() ->
-                            new TechnologyException(T_WITH_NAME + ctr.getName() + NOT_FOUND));
+                            new TechnologyException(T_WITH_NAME + ctr.name() + NOT_FOUND));
             cutRepository.save(cut);
         });
     }

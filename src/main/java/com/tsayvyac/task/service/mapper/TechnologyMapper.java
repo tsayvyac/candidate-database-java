@@ -20,30 +20,30 @@ public class TechnologyMapper {
     private final CandidateRepository candidateRepository;
 
     public TechnologyDetailsResponse mapToDetailsResponse(Technology technology) {
-        return TechnologyDetailsResponse.builder()
-                .id(technology.getId())
-                .name(technology.getName())
-                .usesThisTechnology(mapToCandidateInfo(technology.getUseTechnologies()))
-                .build();
+        return new TechnologyDetailsResponse(
+                technology.getId(),
+                technology.getName(),
+                mapToCandidateInfo(technology.getUseTechnologies())
+        );
     }
 
     public TechnologyResponse mapToResponse(Technology technology) {
-        return TechnologyResponse.builder()
-                .id(technology.getId())
-                .name(technology.getName())
-                .build();
+        return new TechnologyResponse(
+                technology.getId(),
+                technology.getName()
+        );
     }
 
     private Set<CandidateInfo> mapToCandidateInfo(Set<CandidateUseTechnology> candidateUseTechnology) {
         return candidateUseTechnology.stream().map(cut ->
                         candidateRepository.findById(cut.getCandidate().getId()).map(candidate ->
-                                        CandidateInfo.builder()
-                                                .id(candidate.getId())
-                                                .firstName(candidate.getFirstName())
-                                                .lastName(candidate.getLastName())
-                                                .level(cut.getLevel())
-                                                .note(cut.getNote())
-                                                .build()
+                                                new CandidateInfo(
+                                                        candidate.getId(),
+                                                        candidate.getFirstName(),
+                                                        candidate.getLastName(),
+                                                        cut.getLevel(),
+                                                        cut.getNote()
+                                                )
                                 )
                                 .orElseThrow(() ->
                                         new CandidateNotFound(C_WITH_ID + cut.getCandidate().getId() + NOT_FOUND)))
