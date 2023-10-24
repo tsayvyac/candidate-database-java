@@ -8,7 +8,7 @@ import com.tsayvyac.task.exception.CandidateNotFound;
 import com.tsayvyac.task.model.Candidate;
 import com.tsayvyac.task.model.CandidateTechnologyKey;
 import com.tsayvyac.task.repository.CandidateRepository;
-import com.tsayvyac.task.service.mapper.CandidateMapper;
+import com.tsayvyac.task.dto.mapper.CandidateMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

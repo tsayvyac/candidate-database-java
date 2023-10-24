@@ -7,6 +7,7 @@ public class Helper {
     private Helper() {
 
     }
+
     public static Integer checkLevelBounds(Integer level) {
         if (level >= 0 && level < 11)
             return level;

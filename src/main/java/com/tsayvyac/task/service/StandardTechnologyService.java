@@ -7,7 +7,7 @@ import com.tsayvyac.task.exception.TechnologyException;
 import com.tsayvyac.task.model.Technology;
 import com.tsayvyac.task.repository.TechnologyRepository;
 import com.tsayvyac.task.repository.pojo.TechnologyCount;
-import com.tsayvyac.task.service.mapper.TechnologyMapper;
+import com.tsayvyac.task.dto.mapper.TechnologyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

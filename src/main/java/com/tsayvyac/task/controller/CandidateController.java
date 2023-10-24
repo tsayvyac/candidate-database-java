@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,9 +25,8 @@ public class CandidateController {
 
     @Operation(summary = "Gets all candidates")
     @GetMapping(value = "/fetchAll", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public List<CandidateResponse> getAllCandidates() {
-        return candidateService.getAllCandidates();
+    public ResponseEntity<List<CandidateResponse>> getAllCandidates() {
+        return ResponseEntity.ok(candidateService.getAllCandidates());
     }
 
     @Operation(
@@ -34,9 +34,8 @@ public class CandidateController {
             description = "Candidate must exist"
     )
     @GetMapping(value = "/fetchDetails/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public CandidateDetailsResponse getCandidateDetailsById(@PathVariable Long id) {
-        return candidateService.getCandidateDetails(id);
+    public ResponseEntity<CandidateDetailsResponse> getCandidateDetailsById(@PathVariable Long id) {
+        return ResponseEntity.ok(candidateService.getCandidateDetails(id));
     }
 
     @Operation(
@@ -44,9 +43,10 @@ public class CandidateController {
             description = "Technologies must exist"
     )
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public Candidate addCandidate(@RequestBody CandidateRequest candidate) {
-        return candidateService.addCandidate(candidate);
+    public ResponseEntity<Candidate> addCandidate(@RequestBody CandidateRequest candidate) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(candidateService.addCandidate(candidate));
     }
 
     @Operation(
@@ -54,9 +54,8 @@ public class CandidateController {
             description = "Technologies and candidate must exist"
     )
     @PutMapping(value = "/addTech/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public Candidate addNewCandidateTechnology(@PathVariable Long id, @RequestBody List<CandidateTechnologyRequest> candidateTechnologyRequests) {
-        return candidateService.addNewCandidateTechnology(id, candidateTechnologyRequests);
+    public ResponseEntity<Candidate> addNewCandidateTechnology(@PathVariable Long id, @RequestBody List<CandidateTechnologyRequest> candidateTechnologyRequests) {
+        return ResponseEntity.ok(candidateService.addNewCandidateTechnology(id, candidateTechnologyRequests));
     }
 
     @Operation(
@@ -64,9 +63,8 @@ public class CandidateController {
             description = "Candidate must exist"
     )
     @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public Candidate updateCandidate(@PathVariable Long id, @RequestBody CandidateRequest candidateRequest) {
-        return candidateService.updateCandidate(id, candidateRequest);
+    public ResponseEntity<Candidate> updateCandidate(@PathVariable Long id, @RequestBody CandidateRequest candidateRequest) {
+        return ResponseEntity.ok(candidateService.updateCandidate(id, candidateRequest));
     }
 
     @Operation(
@@ -74,8 +72,8 @@ public class CandidateController {
             description = "Candidate must exist"
     )
     @DeleteMapping(value = "/delete/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteCandidate(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCandidate(@PathVariable Long id) {
         candidateService.deleteCandidate(id);
+        return ResponseEntity.ok().build();
     }
 }

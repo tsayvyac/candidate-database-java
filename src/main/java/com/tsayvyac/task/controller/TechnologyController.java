@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,9 +25,8 @@ public class TechnologyController {
 
     @Operation(summary = "Gets all technologies")
     @GetMapping(value = "/fetchAll", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public List<TechnologyResponse> getAllTechnologies() {
-        return technologyService.getAllTechnologies();
+    public ResponseEntity<List<TechnologyResponse>> getAllTechnologies() {
+        return ResponseEntity.ok(technologyService.getAllTechnologies());
     }
 
     @Operation(
@@ -34,23 +34,22 @@ public class TechnologyController {
             description = "Technology must exist"
     )
     @GetMapping(value = "/fetchDetails/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public TechnologyDetailsResponse getTechnologyDetailsById(@PathVariable Long id) {
-        return technologyService.getTechnologyDetails(id);
+    public ResponseEntity<TechnologyDetailsResponse> getTechnologyDetailsById(@PathVariable Long id) {
+        return ResponseEntity.ok(technologyService.getTechnologyDetails(id));
     }
 
     @Operation(summary = "Gets a list with the name of technology and the count of candidates using it.")
     @GetMapping(value = "/stats", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public List<TechnologyCount> getCountOfUsingTechnology() {
-        return technologyService.getCountOfUsingTechnology();
+    public ResponseEntity<List<TechnologyCount>> getCountOfUsingTechnology() {
+        return ResponseEntity.ok(technologyService.getCountOfUsingTechnology());
     }
 
     @Operation(summary = "Adds new technology")
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public Technology addTechnology(@RequestBody TechnologyRequest technology) {
-        return technologyService.addTechnology(technology);
+    public ResponseEntity<Technology> addTechnology(@RequestBody TechnologyRequest technology) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(technologyService.addTechnology(technology));
     }
 
     @Operation(
@@ -58,9 +57,8 @@ public class TechnologyController {
             description = "Technology must exist"
     )
     @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public Technology updateTechnology(@PathVariable Long id, @RequestBody TechnologyRequest technologyRequest) {
-        return technologyService.updateTechnology(id, technologyRequest);
+    public ResponseEntity<Technology> updateTechnology(@PathVariable Long id, @RequestBody TechnologyRequest technologyRequest) {
+        return ResponseEntity.ok(technologyService.updateTechnology(id, technologyRequest));
     }
 
     @Operation(
@@ -68,8 +66,8 @@ public class TechnologyController {
             description = "Technology must exist"
     )
     @DeleteMapping(value = "/delete/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteTechnology(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTechnology(@PathVariable Long id) {
         technologyService.deleteTechnology(id);
+        return ResponseEntity.ok().build();
     }
 }

@@ -1,4 +1,4 @@
-package com.tsayvyac.task.service.mapper;
+package com.tsayvyac.task.dto.mapper;
 
 import com.tsayvyac.task.dto.technology.CandidateInfo;
 import com.tsayvyac.task.dto.technology.TechnologyDetailsResponse;
