@@ -5,11 +5,15 @@ import com.tsayvyac.task.dto.technology.TechnologyRequest;
 import com.tsayvyac.task.dto.technology.TechnologyResponse;
 import com.tsayvyac.task.exception.TechnologyException;
 import com.tsayvyac.task.model.Technology;
+import com.tsayvyac.task.repository.PageableTechnologyRepository;
 import com.tsayvyac.task.repository.TechnologyRepository;
 import com.tsayvyac.task.repository.pojo.TechnologyCount;
 import com.tsayvyac.task.dto.mapper.TechnologyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +28,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 class StandardTechnologyService implements TechnologyService {
     private final TechnologyRepository technologyRepository;
+    private final PageableTechnologyRepository pageableTechnologyRepository;
     private final TechnologyMapper technologyMapper;
 
     @Override
@@ -54,8 +59,10 @@ class StandardTechnologyService implements TechnologyService {
     }
 
     @Override
-    public List<TechnologyResponse> getAllTechnologies() {
-        return technologyRepository.findAll()
+    public List<TechnologyResponse> getAllTechnologies(Integer page) {
+        Pageable allTechnologies = PageRequest
+                .of(page - 1, 16, Sort.by("name"));
+        return pageableTechnologyRepository.findAll(allTechnologies)
                 .stream()
                 .map(technologyMapper::mapToResponse)
                 .toList();
@@ -74,8 +81,10 @@ class StandardTechnologyService implements TechnologyService {
     }
 
     @Override
-    public List<TechnologyCount> getCountOfUsingTechnology() {
-        return technologyRepository.getCountOfUsingTechnology();
+    public List<TechnologyCount> getCountOfUsingTechnology(Integer page) {
+        Pageable allTechnologiesCounts = PageRequest
+                .of(page - 1, 16, Sort.by("name"));
+        return pageableTechnologyRepository.getCountOfUsingTechnology(allTechnologiesCounts);
     }
 
     Long getTechnologyId(String name) {

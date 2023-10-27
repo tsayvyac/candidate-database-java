@@ -37,7 +37,7 @@ public interface TechnologyService {
      *
      * @return A list of {@link TechnologyResponse} objects representing the technologies.
      */
-    List<TechnologyResponse> getAllTechnologies();
+    List<TechnologyResponse> getAllTechnologies(Integer page);
 
     /**
      * Adds a new technology to the database using the provided technology request data.
@@ -52,5 +52,5 @@ public interface TechnologyService {
      *
      * @return A list of technology count information.
      */
-    List<TechnologyCount> getCountOfUsingTechnology();
+    List<TechnologyCount> getCountOfUsingTechnology(Integer page);
 }

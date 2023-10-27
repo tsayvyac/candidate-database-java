@@ -37,7 +37,7 @@ public interface CandidateService {
      *
      * @return A list of {@link CandidateResponse} objects representing the candidates.
      */
-    List<CandidateResponse> getAllCandidates();
+    List<CandidateResponse> getAllCandidates(Integer page);
 
     /**
      * Adds a new candidate to the database using the provided candidate request data.

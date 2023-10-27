@@ -24,9 +24,9 @@ public class TechnologyController {
     private final TechnologyService technologyService;
 
     @Operation(summary = "Gets all technologies")
-    @GetMapping(value = "/fetchAll", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<TechnologyResponse>> getAllTechnologies() {
-        return ResponseEntity.ok(technologyService.getAllTechnologies());
+    @GetMapping(value = "/fetchAll/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TechnologyResponse>> getAllTechnologies(@PathVariable Integer page) {
+        return ResponseEntity.ok(technologyService.getAllTechnologies(page));
     }
 
     @Operation(
@@ -39,9 +39,9 @@ public class TechnologyController {
     }
 
     @Operation(summary = "Gets a list with the name of technology and the count of candidates using it.")
-    @GetMapping(value = "/stats", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<TechnologyCount>> getCountOfUsingTechnology() {
-        return ResponseEntity.ok(technologyService.getCountOfUsingTechnology());
+    @GetMapping(value = "/stats/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TechnologyCount>> getCountOfUsingTechnology(@PathVariable Integer page) {
+        return ResponseEntity.ok(technologyService.getCountOfUsingTechnology(page));
     }
 
     @Operation(summary = "Adds new technology")

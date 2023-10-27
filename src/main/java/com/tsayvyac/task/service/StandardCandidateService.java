@@ -9,8 +9,12 @@ import com.tsayvyac.task.model.Candidate;
 import com.tsayvyac.task.model.CandidateTechnologyKey;
 import com.tsayvyac.task.repository.CandidateRepository;
 import com.tsayvyac.task.dto.mapper.CandidateMapper;
+import com.tsayvyac.task.repository.PageableCandidateRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +30,7 @@ import static com.tsayvyac.task.util.Constant.NOT_FOUND;
 @RequiredArgsConstructor
 class StandardCandidateService implements CandidateService {
     private final CandidateRepository candidateRepository;
+    private final PageableCandidateRepository pageableCandidateRepository;
     private final CandidateMapper candidateMapper;
     private final StandardTechnologyService technologyService;
     private final CandidateUseTechnologyService cutService;
@@ -68,8 +73,10 @@ class StandardCandidateService implements CandidateService {
     }
 
     @Override
-    public List<CandidateResponse> getAllCandidates() {
-        return candidateRepository.findAll()
+    public List<CandidateResponse> getAllCandidates(Integer page) {
+        Pageable allCandidates = PageRequest
+                .of(page - 1, 16, Sort.by("lastName"));
+        return pageableCandidateRepository.findAll(allCandidates)
                 .stream()
                 .map(candidateMapper::mapToCandidateResponse)
                 .toList();

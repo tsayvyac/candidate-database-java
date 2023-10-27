@@ -24,9 +24,9 @@ public class CandidateController {
     private final CandidateService candidateService;
 
     @Operation(summary = "Gets all candidates")
-    @GetMapping(value = "/fetchAll", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CandidateResponse>> getAllCandidates() {
-        return ResponseEntity.ok(candidateService.getAllCandidates());
+    @GetMapping(value = "/fetchAll/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CandidateResponse>> getAllCandidates(@PathVariable Integer page) {
+        return ResponseEntity.ok(candidateService.getAllCandidates(page));
     }
 
     @Operation(
